@@ -1,0 +1,29 @@
+import { saveFile } from './saveFile'
+import { Capacitor, registerPlugin } from '@capacitor/core'
+import { useEffect, useState } from 'react'
+import { Clipboard, Download, ExternalLink, MessageSquareText, X } from 'lucide-react'
+import './FeedbackDialog.css'
+
+type Feedback={id:string;improvements:string;features:string;problems:string;updatedAt:string}
+const DRAFT_KEY='myoffice-feedback-draft-v1'
+const StoreLink=registerPlugin<{open():Promise<void>}>('StoreLink')
+const SAVED_KEY='myoffice-feedback-saved-v1'
+const blank=():Feedback=>({id:crypto.randomUUID(),improvements:'',features:'',problems:'',updatedAt:''})
+const readDraft=():Feedback=>{try{const value=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(value&&typeof value.improvements==='string'&&typeof value.features==='string'&&typeof value.problems==='string')return value}catch{/* new draft */}return blank()}
+const readSaved=():Feedback[]=>{try{const value=JSON.parse(localStorage.getItem(SAVED_KEY)||'[]');return Array.isArray(value)?value.filter(item=>item&&typeof item.id==='string'):[]}catch{return []}}
+const format=(feedback:Feedback)=>`Myoffice Studio feedback\nDate: ${new Date(feedback.updatedAt||Date.now()).toLocaleString()}\n\nHow should we improve the app?\n${feedback.improvements.trim()||'—'}\n\nWhat features would you like added?\n${feedback.features.trim()||'—'}\n\nWhat is not working well?\n${feedback.problems.trim()||'—'}\n`
+
+export function FeedbackDialog({onClose}:{onClose:()=>void}){
+ const [draft,setDraft]=useState<Feedback>(readDraft)
+ const [saved,setSaved]=useState<Feedback[]>(readSaved)
+ const [status,setStatus]=useState('')
+ const hasContent=Boolean(draft.improvements.trim()||draft.features.trim()||draft.problems.trim())
+ useEffect(()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify(draft))}catch{/* save action reports storage errors */}},[draft])
+ useEffect(()=>{const onKey=(event:KeyboardEvent)=>{if(event.key==='Escape')onClose()};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[onClose])
+ const update=(field:'improvements'|'features'|'problems',value:string)=>{setDraft(current=>({...current,[field]:value}));setStatus('')}
+ const save=()=>{const entry={...draft,updatedAt:new Date().toISOString()};const next=[entry,...saved.filter(item=>item.id!==entry.id)].slice(0,30);try{localStorage.setItem(SAVED_KEY,JSON.stringify(next));setSaved(next);setDraft(entry);setStatus('Saved on this device. Copy or download it to share.');return entry}catch{setStatus('Could not save on this device. You can still copy or download it.');return entry}}
+ const copy=async()=>{const entry=save();try{await navigator.clipboard.writeText(format(entry));setStatus('Copied. Paste it into a message to share your feedback.')}catch{const input=document.createElement('textarea');input.value=format(entry);input.style.position='fixed';input.style.left='-9999px';document.body.appendChild(input);input.select();const done=document.execCommand('copy');input.remove();setStatus(done?'Copied. Paste it into a message to share your feedback.':'Copy is unavailable. Use Download instead.')}}
+ const openStore=()=>{void StoreLink.open().catch(()=>setStatus('Could not open the Play Store on this device.'))}
+ const download=()=>{const entry=save();void saveFile(new Blob([format(entry)],{type:'text/plain;charset=utf-8'}),`myoffice-feedback-${entry.updatedAt.slice(0,10)}.txt`).then(()=>setStatus('Feedback ready to share.')).catch(error=>setStatus(`Could not export feedback: ${error}`))}
+ return <div className="feedback-backdrop" onMouseDown={event=>{if(event.target===event.currentTarget)onClose()}}><section className="feedback-dialog" role="dialog" aria-modal="true" aria-labelledby="feedback-title"><header><span className="feedback-icon"><MessageSquareText size={22}/></span><div><h2 id="feedback-title">Help improve Myoffice</h2><p>Tell us what to improve next.</p></div><button className="feedback-close" aria-label="Close feedback" onClick={onClose}><X size={19}/></button></header>{Capacitor.getPlatform()==='android'&&<div className="feedback-store"><div><strong>Enjoying Myoffice?</strong><span>Rate it on Google Play when the app is published.</span></div><button type="button" onClick={openStore}><ExternalLink size={16}/> Rate on Play Store</button></div>}<div className="feedback-fields"><label>How should we update or improve the app?<textarea value={draft.improvements} onChange={event=>update('improvements',event.target.value)} placeholder="Tell us what would make your work easier."/></label><label>Request a feature or update<textarea value={draft.features} onChange={event=>update('features',event.target.value)} placeholder="Describe the feature you want added."/></label><label>What is not working well?<textarea value={draft.problems} onChange={event=>update('problems',event.target.value)} placeholder="Describe the problem and where it happens."/></label></div><p className="feedback-privacy">Feedback stays on this device until you copy or download it to share.</p>{status&&<p className="feedback-status" role="status">{status}</p>}<footer><button className="feedback-clear" onClick={()=>{setDraft(blank());setStatus('New feedback started.')}}>New feedback</button><button disabled={!hasContent} onClick={save}>Save on this device</button><button disabled={!hasContent} onClick={()=>void copy()}><Clipboard size={15}/> Copy</button><button className="feedback-primary" disabled={!hasContent} onClick={download}><Download size={15}/> Download</button></footer>{saved.length>0&&<div className="feedback-saved"><span>Saved feedback ({saved.length})</span><div>{saved.slice(0,3).map(item=><button key={item.id} onClick={()=>{setDraft(item);setStatus('Loaded saved feedback.')}}>{new Date(item.updatedAt).toLocaleDateString()} · {(item.improvements||item.features||item.problems||'Feedback').slice(0,45)}</button>)}</div></div>}</section></div>
+}

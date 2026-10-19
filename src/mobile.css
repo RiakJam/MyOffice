@@ -1,0 +1,53 @@
+/* Android keeps document and slide proportions while fitting the controls to touch screens. */
+@media (max-width: 700px) {
+  html.myoffice-android, html.myoffice-android body, html.myoffice-android #root { width: 100%; min-width: 0; overflow-x: hidden; }
+  html.myoffice-android .office-shell { width: 100%; min-width: 0; overflow: hidden; }
+  html.myoffice-android .office-home-main { padding-bottom: max(32px, env(safe-area-inset-bottom)); }
+  html.myoffice-android .office-home-card { min-height: 116px; }
+  html.myoffice-android .office-home-card .office-card-art { flex-basis: 88px; width: 88px; }
+  html.myoffice-android .office-apps-button { position: fixed; top: max(5px, env(safe-area-inset-top)); left: 5px; height: 31px; }
+  html.myoffice-android .office-shell .word-titlebar { min-width: 0; padding: 0 8px 0 49px; height: 40px; gap: 5px; }
+  html.myoffice-android .word-titlebar .workspace-brand, html.myoffice-android .word-titlebar .title-save-state, html.myoffice-android .word-titlebar .title-actions { display: none; }
+  html.myoffice-android .word-titlebar .window-title { min-width: 0; flex: 1; overflow: hidden; }
+  html.myoffice-android .word-titlebar .window-title input { width: 100%; min-width: 0; }
+  html.myoffice-android .word-titlebar .window-title span { display: none; }
+  html.myoffice-android .fixed-ribbon { width: 100%; min-width: 0; }
+  html.myoffice-android .fixed-ribbon nav { overflow-x: auto; overflow-y: hidden; justify-content: flex-start; padding: 0 4px; scrollbar-width: none; touch-action: pan-x; -webkit-overflow-scrolling: touch; }
+  html.myoffice-android .fixed-ribbon nav > div { flex: none; }
+  html.myoffice-android .fixed-ribbon nav button { min-height: 44px; padding: 0 12px; }
+  html.myoffice-android .fixed-ribbon .ribbon { width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; touch-action: pan-x; -webkit-overflow-scrolling: touch; padding: 5px 8px; }
+  html.myoffice-android .app .ribbon section { width: max-content; min-width: max-content; flex: none; }
+  html.myoffice-android .presentation-ribbon section, html.myoffice-android .spreadsheet-ribbon section { width: max-content; flex: none; }
+  html.myoffice-android .presentation-ribbon .presentation-tools button { min-width: 69px; }
+  html.myoffice-android .ribbon button, html.myoffice-android .spreadsheet-sheetbar button { touch-action: manipulation; }
+  html.myoffice-android .app { padding-bottom: 0; }
+  html.myoffice-android .app main { min-width: 0; width: 100%; min-height: 0; flex: none; }
+  html.myoffice-android .app .stage { width: 100%; min-width: 0; overflow-x: auto; overflow-y: hidden; padding: 8px 8px 28px; -webkit-overflow-scrolling: touch; }
+  html.myoffice-android .app .document-stack { margin: 0; }
+  html.myoffice-android .app .pagination-surface .document-content.rm-with-pagination { border-right: 1px solid #c8c8c8 !important; }
+  html.myoffice-android .app .document-content { font-size: 26px; line-height: 1.45; }
+  html.myoffice-android .app .document-content h1 { font-size: 38px; }
+  html.myoffice-android .app .document-content h2 { font-size: 28px; }
+  html.myoffice-android .app .document-content p { margin-bottom: 16px; }
+  html.myoffice-android .app .ruler-holder { display: none; }
+  html.myoffice-android .app .vertical-ruler { display: none; }
+  html.myoffice-android .app footer { padding: 0 8px; }
+  html.myoffice-android .app footer > div:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html.myoffice-android .app footer em, html.myoffice-android .app footer input[type=range] { display: none; }
+  html.myoffice-android .spreadsheet-app, html.myoffice-android .presentation-app { height: 100dvh; min-width: 0; }
+  html.myoffice-android .spreadsheet-grid th, html.myoffice-android .spreadsheet-grid td { min-width: 84px; max-width: 84px; height: 34px; }
+  html.myoffice-android .spreadsheet-formula-bar input { font-size: 16px; }
+  html.myoffice-android .sheet-chart-card { width: min(360px, calc(100vw - 16px)); left: 8px !important; }
+  html.myoffice-android .presentation-workspace { flex-direction: column; overflow: hidden; }
+  html.myoffice-android .presentation-rail { width: 100%; height: 100px; flex: none; display: flex; overflow-x: auto; overflow-y: hidden; gap: 7px; padding: 6px; border-right: 0; border-bottom: 1px solid #ccd8db; }
+  html.myoffice-android .presentation-rail-title { min-width: 72px; margin: 0; }
+  html.myoffice-android .presentation-thumbnail { min-width: 118px; width: 118px; }
+  html.myoffice-android .presentation-thumbnail > div { width: 90px; }
+  html.myoffice-android .presentation-stage { min-height: 0; padding: 10px; gap: 9px; justify-content: flex-start; }
+  html.myoffice-android .presentation-canvas-frame { width: calc(100vw - 20px) !important; max-width: 100%; }
+  html.myoffice-android .presentation-notes { flex-wrap: wrap; gap: 4px; }
+  html.myoffice-android .presentation-properties { width: 100%; height: 160px; flex: none; overflow-y: auto; border-left: 0; border-top: 1px solid #d5e1e4; padding: 10px; gap: 8px; }
+  html.myoffice-android .presentation-shapes-section { max-width: none; }
+  html.myoffice-android .presentation-player-controls { gap: 7px; font-size: 11px; }
+  html.myoffice-android .presentation-player-controls button { padding: 7px 4px; }
+}

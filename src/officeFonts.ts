@@ -1,0 +1,26 @@
+export const officeFonts = [
+ 'Arial',
+ 'Arial Black',
+ 'Calibri',
+ 'Cambria',
+ 'Candara',
+ 'Century Gothic',
+ 'Comic Sans MS',
+ 'Consolas',
+ 'Constantia',
+ 'Corbel',
+ 'Courier New',
+ 'Franklin Gothic Medium',
+ 'Garamond',
+ 'Georgia',
+ 'Impact',
+ 'Lucida Sans Unicode',
+ 'Palatino Linotype',
+ 'Segoe UI',
+ 'Tahoma',
+ 'Times New Roman',
+ 'Trebuchet MS',
+ 'Verdana',
+] as const
+
+export const fontsWithCurrent=(current:string)=>officeFonts.includes(current as typeof officeFonts[number])?[...officeFonts]:[...officeFonts,current]

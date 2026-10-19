@@ -1,0 +1,18 @@
+export type ChartType='pie'|'doughnut'|'bar'|'line'
+export type SheetChart={id:string;type:ChartType;title:string;range:string;x:number;y:number}
+type Point={label:string;value:number}
+const colors=['#16a394','#f28c60','#5976cf','#db6fa0','#efbd55','#58a9d4','#8b6bc7','#76bd73','#d07161','#4c91a2']
+const polar=(cx:number,cy:number,r:number,angle:number)=>({x:cx+r*Math.cos(angle),y:cy+r*Math.sin(angle)})
+function Pie({points,doughnut}:{points:Point[];doughnut:boolean}){
+ const total=points.reduce((sum,point)=>sum+Math.max(0,point.value),0)
+ if(!total)return <text x="200" y="120" textAnchor="middle" fill="#6c8088">Enter positive values to draw a chart</text>
+ let angle=-Math.PI/2
+ return <>{points.map((point,index)=>{const portion=Math.max(0,point.value)/total;const start=angle;angle+=portion*Math.PI*2;const end=angle;const outerStart=polar(158,120,92,start),outerEnd=polar(158,120,92,end),innerEnd=polar(158,120,48,end),innerStart=polar(158,120,48,start);const large=portion>.5?1:0;const path=portion>=.9999?null:doughnut?`M ${outerStart.x} ${outerStart.y} A 92 92 0 ${large} 1 ${outerEnd.x} ${outerEnd.y} L ${innerEnd.x} ${innerEnd.y} A 48 48 0 ${large} 0 ${innerStart.x} ${innerStart.y} Z`:`M 158 120 L ${outerStart.x} ${outerStart.y} A 92 92 0 ${large} 1 ${outerEnd.x} ${outerEnd.y} Z`;return portion>0?<g key={index}><path d={path||`M 158 28 A 92 92 0 1 1 157.99 28 Z`} fill={colors[index%colors.length]} stroke="#fff" strokeWidth="2"/>{doughnut&&portion>=.9999&&<circle cx="158" cy="120" r="48" fill="#fff"/>}</g>:null})}</>
+}
+export function SpreadsheetChart({type,points}:{type:ChartType;points:Point[]}){
+ const clean=points.filter(point=>Number.isFinite(point.value)).slice(0,12)
+ if(!clean.length)return <div className="sheet-chart-empty">Enter labels and numbers in the selected cell range.</div>
+ if(type==='pie'||type==='doughnut')return <svg className="sheet-chart-svg" viewBox="0 0 400 250" role="img" aria-label={`${type} chart`}><Pie points={clean} doughnut={type==='doughnut'}/>{clean.slice(0,8).map((point,index)=><g key={index}><rect x="278" y={34+index*23} width="10" height="10" rx="2" fill={colors[index%colors.length]}/><text x="295" y={43+index*23} fontSize="11" fill="#405b67">{point.label.slice(0,13)}</text></g>)}</svg>
+ const max=Math.max(1,...clean.map(point=>point.value));const min=Math.min(0,...clean.map(point=>point.value));const scale=(value:number)=>193-(value-min)/(max-min||1)*153;const step=330/clean.length;const dots=clean.map((point,index)=>({x:48+step*(index+.5),y:scale(point.value)}))
+ return <svg className="sheet-chart-svg" viewBox="0 0 400 250" role="img" aria-label={`${type} chart`}><line x1="40" y1="193" x2="385" y2="193" stroke="#a9c0c8"/><line x1="40" y1="34" x2="40" y2="193" stroke="#a9c0c8"/>{[0,.5,1].map((part,index)=><g key={index}><line x1="40" y1={193-part*153} x2="385" y2={193-part*153} stroke="#e6eef0"/><text x="35" y={197-part*153} textAnchor="end" fontSize="10" fill="#78909b">{Math.round(min+(max-min)*part)}</text></g>)}{type==='bar'?clean.map((point,index)=>{const y=scale(Math.max(0,point.value)),zero=scale(0);return <rect key={index} x={48+step*index+step*.15} y={Math.min(y,zero)} width={step*.7} height={Math.max(1,Math.abs(zero-y))} rx="3" fill={colors[index%colors.length]}/>}):<><polyline points={dots.map(dot=>`${dot.x},${dot.y}`).join(' ')} fill="none" stroke="#168f88" strokeWidth="3" strokeLinejoin="round"/>{dots.map((dot,index)=><circle key={index} cx={dot.x} cy={dot.y} r="4" fill="#fff" stroke="#168f88" strokeWidth="2"/>)}</>}{clean.map((point,index)=><text key={index} x={48+step*(index+.5)} y="211" textAnchor="middle" fontSize="10" fill="#607983">{point.label.slice(0,7)}</text>)}</svg>
+}

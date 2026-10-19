@@ -1,0 +1,26 @@
+.office-shell{position:relative;min-height:100vh}
+.desktop-window-titlebar{height:31px;min-height:31px;display:flex;align-items:center;gap:8px;padding-left:9px;box-sizing:border-box;background-color:#0b1c29;background-image:url('./assets/circuit-ribbon.svg'),linear-gradient(105deg,#07131c 0%,#102334 58%,#17243c 100%);background-size:1440px 92px,cover;background-position:left center,center;background-repeat:repeat-x,no-repeat;color:#e7faff;font:12px Arial,sans-serif;-webkit-app-region:drag;position:sticky;top:0;z-index:51}
+.desktop-window-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;pointer-events:none;white-space:nowrap}
+.desktop-window-brand img{width:19px;height:19px}
+.desktop-window-controls{height:100%;display:flex;margin-left:auto;-webkit-app-region:no-drag}
+.desktop-window-controls button{height:100%;width:40px;display:grid;place-items:center;border:0;background:transparent;color:#d7e9ef}
+.desktop-window-controls button:hover,.desktop-window-controls button:focus-visible{background:#2b5e67;color:#fff;outline:0}
+.desktop-window-controls button:last-child:hover,.desktop-window-controls button:last-child:focus-visible{background:#bd4050}
+.desktop-menu-bar{height:28px;min-height:28px;display:flex;align-items:stretch;background-color:#0b1c29;background-image:url('./assets/circuit-ribbon.svg'),linear-gradient(105deg,#07131c 0%,#102334 58%,#17243c 100%);background-size:1440px 92px,cover;background-position:left center,center;background-repeat:repeat-x,no-repeat;border-bottom:1px solid #284958;box-sizing:border-box;font:13px Arial,sans-serif;position:sticky;top:0;z-index:50}
+.desktop-menu-bar button{min-width:42px;padding:0 10px;border:0;background:transparent;color:#d7e9ef;text-align:center}
+.desktop-menu-bar button:hover,.desktop-menu-bar button:focus-visible{background:#2b5e67;color:#8af6e8;outline:0}
+.office-shell .word-titlebar{padding-left:151px}
+.office-apps-button{position:absolute;z-index:30;top:4px;left:9px;height:24px;display:flex;align-items:center;gap:5px;padding:0 9px;border:1px solid #59b9b755;border-radius:5px;background:#102f3d;color:#adede5;font-size:10px;line-height:1;white-space:nowrap}
+.office-apps-button:hover,.office-apps-button:focus-visible{background:#1a4955;color:#fff;border-color:#75e4d5;outline:none}
+@media(max-width:1000px){.office-shell .word-titlebar{padding-left:75px}.office-apps-button{font-size:0;padding:0 8px}.office-apps-button svg{width:15px;height:15px}}
+.office-file-menu{z-index:40}
+@media print{.office-apps-button{display:none!important}}
+/* Keep Word's full top area together while the document scrolls. */
+.office-shell .app .word-titlebar{position:sticky;top:0;z-index:11}
+.office-shell .app .fixed-ribbon{position:sticky;top:32px;z-index:10}
+.office-shell:has(.app) .office-apps-button{position:fixed;z-index:12}
+body:has(.desktop-window-titlebar) .desktop-menu-bar{top:31px}
+body:has(.desktop-window-titlebar) .office-shell .app .word-titlebar{top:59px}
+body:has(.desktop-window-titlebar) .office-shell .app .fixed-ribbon{top:91px}
+body:has(.desktop-window-titlebar) .office-shell .office-apps-button{position:fixed;top:63px;z-index:12}
+@media print{.desktop-window-titlebar,.desktop-menu-bar{display:none!important}}

@@ -11,6 +11,21 @@ npm run desktop
 
 The Vite server started by `npm run desktop` is only for local development. Electron Builder has targets configured for Linux AppImage, Windows NSIS, and macOS DMG; build each installer on its target operating system.
 
+## Install on Kali Linux from GitHub
+
+The repository must contain the full project source before these commands will work. On Kali Linux:
+
+```bash
+sudo apt update
+sudo apt install -y git nodejs npm libgtk-3-0t64 libnss3 libasound2t64
+git clone https://github.com/RiakJam/MyOffice.git
+cd MyOffice
+bash install-kali.sh
+~/.local/bin/myoffice
+```
+
+The script requires Node.js 22.12 or newer. It builds the Linux desktop app and installs it for the current user under `~/.local/opt/myoffice`, with an application menu shortcut. To update later, run `git pull && bash install-kali.sh` from the cloned directory. It does not overwrite drafts stored in the user's application data.
+
 ## Android
 
 Install Android Studio, its Android SDK, and JDK 21. Run `npm run android:open` to build the shared interface, sync it into `android/`, and open the native project. Run from Android Studio on a device or emulator. `npm run android:run` runs the same sync and launches on a connected device. To create a test APK from the command line, run `npm run android:sync` and then `cd android && ./gradlew assembleDebug`; the APK will be at `android/app/build/outputs/apk/debug/app-debug.apk`. Android exports open the system Save document picker. The Android app stores its own drafts on the device; drafts from an existing desktop install are separate and should be exported/imported as files when moving between devices.
