@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Myoffice
+Comment=Myoffice Word editor
+Exec=/home/wande/Desktop/Myoffice/run-desktop.sh
+Icon=/home/wande/Desktop/Myoffice/public/favicon.svg
+Terminal=false
+Categories=Office;WordProcessor;
+StartupWMClass=myoffice

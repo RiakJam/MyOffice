@@ -1,0 +1,21 @@
+{
+  "format": "myoffice-word",
+  "version": 1,
+  "title": "Untitled document",
+  "content": "<h2>Contents</h2><ol><li><p>Welcome to Myoffice Word</p></li><li><p>Everything starts with a first draft</p></li></ol><table style=\"min-width: 75px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th><p>This is really</p></th><th><p></p></th><th><p></p></th></tr><tr><td><p></p></td><td><p></p></td><td><p></p></td></tr><tr><td><p></p></td><td><p></p></td><td><p></p></td></tr></tbody></table><h1 style=\"text-align: center;\">Welcome to Myoffice Word</h1><p>A quiet place for your best ideas.</p><p>Start writing here. Use the toolbar to shape your document, add a table or image, and save your work as you go.</p><h2>Everything starts with a first draft</h2><p>Whether you’re preparing a report, sharing a story, or planning your next project, Myoffice gives your words room to grow.</p><blockquote><p>Great work begins with a single sentence.</p></blockquote><p>Try selecting text to make it <strong>bold</strong>, <em>italic</em>, or <u>underlined</u>.</p><p></p><p></p><p></p><p></p><p></p>",
+  "settings": {
+    "pageSize": "A4",
+    "orientation": "portrait",
+    "leftMargin": 35,
+    "rightMargin": 34,
+    "topMargin": 44,
+    "bottomMargin": 33,
+    "pageColor": "#ffffff",
+    "pageBorder": false,
+    "theme": "classic",
+    "header": "",
+    "footer": "Page {page} of {pages}",
+    "ruler": true,
+    "margin": 32
+  }
+}
