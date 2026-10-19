@@ -4,7 +4,7 @@ import myofficeMark from './assets/myoffice-mark.svg'
 import { useEffect, useRef, useState } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { generateJSON } from '@tiptap/core'
-import type { JSONContent } from '@tiptap/core'
+import type { Editor, JSONContent } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
@@ -141,7 +141,9 @@ function App({onOpenPresentation}:{onOpenPresentation?:()=>void}){
  const imageFileRef=useRef<HTMLInputElement>(null)
  const linkSelectionRef=useRef<{from:number;to:number}>({from:0,to:0})
  const pageRef=useRef<HTMLDivElement>(null)
- const editor=useEditor({extensions:[StarterKit.configure({link:false,underline:false,bulletList:false,orderedList:false,paragraph:false,heading:false}),SpacedParagraph,SpacedHeading,StyledBulletList,StyledOrderedList,RadioList,RadioItem,ColumnSection,ColumnBox,ManualPageBreak,FootnoteReference,ImageCaption,TableOfContents,Underline,TextAlign.configure({types:['heading','paragraph']}),Link.configure({openOnClick:false}),ResizableImage.configure({allowBase64:true}),WordTable.configure({resizable:false}),SizedTableRow,ShadedTableHeader,ShadedTableCell,TextStyle,Color,FontFamily,FontSize,Subscript,Superscript,TaskList,TaskItem,Highlight.configure({multicolor:true}),PaginationPlus.configure({pageWidth:794,pageHeight:1123,pageGap:30,pageBreakBackground:'#e6e6e6',marginTop:82,marginBottom:82,marginLeft:82,marginRight:82,footerRight:'Page {page}',onHeaderClick:()=>setHeaderFooterDialog('header'),onFooterClick:()=>setHeaderFooterDialog('footer')})],content:firstDocument.content,editorProps:{attributes:{class:'document-content',spellcheck:'true'},transformPastedHTML:normalizeWordPaste},onUpdate:({editor})=>{setWords(editor.getText().trim().split(/\s+/).filter(Boolean).length);setStatus('Saving…');setRevision(v=>v+1);setDocuments(items=>items.map(item=>item.id===activeDocIdRef.current?{...item,content:editor.getHTML()}:item))},onSelectionUpdate:()=>setSelectionVersion(v=>v+1)})
+ const editorRef=useRef<Editor|null>(null)
+ const editor=useEditor({extensions:[StarterKit.configure({link:false,underline:false,bulletList:false,orderedList:false,paragraph:false,heading:false}),SpacedParagraph,SpacedHeading,StyledBulletList,StyledOrderedList,RadioList,RadioItem,ColumnSection,ColumnBox,ManualPageBreak,FootnoteReference,ImageCaption,TableOfContents,Underline,TextAlign.configure({types:['heading','paragraph']}),Link.configure({openOnClick:false}),ResizableImage.configure({allowBase64:true}),WordTable.configure({resizable:false}),SizedTableRow,ShadedTableHeader,ShadedTableCell,TextStyle,Color,FontFamily,FontSize,Subscript,Superscript,TaskList,TaskItem,Highlight.configure({multicolor:true}),PaginationPlus.configure({pageWidth:794,pageHeight:1123,pageGap:30,pageBreakBackground:'#e6e6e6',marginTop:82,marginBottom:82,marginLeft:82,marginRight:82,footerRight:'Page {page}',onHeaderClick:()=>setHeaderFooterDialog('header'),onFooterClick:()=>setHeaderFooterDialog('footer')})],content:firstDocument.content,editorProps:{attributes:{class:'document-content',spellcheck:'true'},transformPastedHTML:normalizeWordPaste,handleKeyDown:(_view,event)=>{if(event.key!=='Tab')return false;const current=editorRef.current;if(!current?.isActive('table'))return false;event.preventDefault();if(event.shiftKey)return current.commands.goToPreviousCell();if(current.commands.goToNextCell())return true;return current.chain().addRowAfter().goToNextCell().run()}},onUpdate:({editor})=>{setWords(editor.getText().trim().split(/\s+/).filter(Boolean).length);setStatus('Saving…');setRevision(v=>v+1);setDocuments(items=>items.map(item=>item.id===activeDocIdRef.current?{...item,content:editor.getHTML()}:item))},onSelectionUpdate:()=>setSelectionVersion(v=>v+1)})
+ editorRef.current=editor
  useEffect(()=>{if(editor)setWords(editor.getText().trim().split(/\s+/).filter(Boolean).length)},[editor])
  useEffect(()=>{setDocuments(items=>items.map(item=>item.id===activeDocId?{...item,title,settings}:item))},[title,settings,activeDocId])
  useEffect(()=>{const timer=setTimeout(()=>{localStorage.setItem(LIBRARY_KEY,JSON.stringify({documents,activeId:activeDocId}));setStatus('All changes saved')},450);return()=>clearTimeout(timer)},[documents,activeDocId])
@@ -565,11 +567,13 @@ function App({onOpenPresentation}:{onOpenPresentation?:()=>void}){
    const key=event.key.toLowerCase()
    const run=(action:()=>void)=>{event.preventDefault();action()}
    if(event.key==='F12'&&!modifier&&!event.altKey){run(saveAs);return}
+   if(event.key==='F3'&&event.shiftKey&&!modifier&&!event.altKey){if(!inField)run(()=>changeCase('toggle'));return}
    if(!modifier||event.altKey&&!(event.ctrlKey&&/^[123]$/.test(key)))return
    if(event.ctrlKey&&event.altKey&&/^[123]$/.test(key)){
     if(inField)return
     run(()=>editor?.chain().focus().setHeading({level:Number(key) as 1|2|3}).run());return
    }
+   if(event.ctrlKey&&event.altKey&&key==='f'){if(!inField)run(openFootnote);return}
    if(event.altKey)return
    if(event.shiftKey){
     if(key==='s'){run(saveAs);return}
@@ -589,6 +593,8 @@ function App({onOpenPresentation}:{onOpenPresentation?:()=>void}){
    if(key==='w'){run(()=>setCloseRequest({kind:'tab',id:activeDocIdRef.current}));return}
    if(inField)return
    if(key==='k'){run(addLink);return}
+   if(key==='1'||key==='2'||key==='5'){run(()=>applySpacing('lineSpacing',key==='1'?'1':key==='2'?'2':'1.5'));return}
+   if(key==='q'){run(()=>editor?.chain().focus().setParagraph().run());return}
    if(key==='enter'){run(addPageBreak);return}
    if(key==='e'){run(()=>editor?.chain().focus().setTextAlign('center').run());return}
    if(key==='l'){run(()=>editor?.chain().focus().setTextAlign('left').run());return}

@@ -54,6 +54,14 @@ On this Linux desktop, double-click `Myoffice.desktop` on the Desktop to run the
 - Basic find and local autosave. Open DOCX, HTML, TXT, and legacy `.myoffice` files. Save As and Export DOCX create real Microsoft Word files; PDF, HTML, TXT, and optional `.myoffice` backup exports remain available on desktop and Android.
 - Word-style shortcuts include Ctrl/Cmd+S (save), Shift+Ctrl/Cmd+S or F12 (Save As), Ctrl/Cmd+N (new document), O (open), P (print), F (find), H (replace), K (link), Enter (page break), W (close tab), E/L/R/J (alignment), Shift+L (bullets), Shift+N (normal paragraph), Ctrl+Alt+1/2/3 (headings), and font size keys. The editor also supports bold, italic, underline, and undo/redo shortcuts.
 
+## Keyboard shortcuts
+
+- **Word:** Tab and Shift+Tab move through table cells; Tab in the last cell adds a row. Ctrl/Cmd+B/I/U, Z/Y, S, O, N, P, F, H, K, E/L/R/J, 1/2/5 (line spacing), and Ctrl/Cmd+Enter (page break) work in the editor. Ctrl+Alt+1/2/3 applies heading styles, Ctrl+Alt+F inserts a footnote, Shift+F3 changes selected text case, and F12 opens Save As.
+- **Spreadsheet:** Tab and Shift+Tab move across cells; Enter and Shift+Enter move down and up. Arrow keys, Home, Page Up/Down, Ctrl/Cmd+Home/End, F2, Delete, and direct typing work on the selected cell. Ctrl/Cmd+C/X/V, Z/Y, B/I/U, S, O, N, P, F/H, G, D/R, and Ctrl/Cmd+Page Up/Down or Ctrl/Cmd+Tab are available. Alt+= inserts AutoSum, Ctrl+; inserts the date, and Shift+F11 adds a sheet.
+- **Presentation:** Ctrl/Cmd+M adds a slide; Ctrl/Cmd+D duplicates it; Ctrl/Cmd+C/X/V copies, cuts, and pastes selected objects; Ctrl/Cmd+Z/Y undoes and redoes; Ctrl/Cmd+B/I/U formats a selected text object. F5 starts the slideshow from the beginning, Shift+F5 starts from the current slide, Esc exits, and Page Up/Down changes slides while editing.
+
+Shortcuts act on the current workspace and selection. Text fields keep their normal text-editing keys unless a workbook or presentation command is explicitly handled.
+
 ## Current limits
 
 This is not Microsoft Word feature parity. DOCX conversion supports common text formatting, headings, tables, images, page layout, headers, footers, and page numbers; complex Word features can change on import or export. Custom per-page Roman numeral ranges are not yet preserved in DOCX. XLSX is the separate Excel workbook format and is not produced by this Word editor. Drafts stored only in application storage can be lost if that storage is cleared; use Save As DOCX for important drafts. Direct PDF export currently rasterizes the document, so text in that PDF is not selectable.
