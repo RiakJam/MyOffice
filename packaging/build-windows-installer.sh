@@ -6,6 +6,7 @@ cd "$project_dir"
 
 npm run build
 npx electron-builder --win dir --x64
+node packaging/apply-windows-icon.mjs dist/win-unpacked/Myoffice.exe
 
 if command -v makensis >/dev/null 2>&1; then
   nsis_binary="$(command -v makensis)"
