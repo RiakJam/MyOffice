@@ -11,20 +11,25 @@
   !define DISPLAY_VERSION "0.0.0"
 !endif
 Unicode true
+!include "MUI2.nsh"
+
 Name "Myoffice"
 OutFile "${OUTPUT_FILE}"
 InstallDir "$LOCALAPPDATA\Programs\Myoffice"
 RequestExecutionLevel user
 SetCompressor zlib
-ShowInstDetails show
-ShowUninstDetails show
+ShowInstDetails nevershow
+ShowUninstDetails nevershow
 Icon "${ICON_FILE}"
 UninstallIcon "${ICON_FILE}"
-Page directory
-Page instfiles
-UninstPage uninstConfirm
-UninstPage instfiles
+!define MUI_FINISHPAGE_RUN "$INSTDIR\Myoffice.exe"
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_LANGUAGE "English"
 Section "Install Myoffice"
+  DetailPrint "Installing Myoffice..."
   SetOutPath "$INSTDIR"
   File /r "${INPUT_DIR}/*"
   WriteUninstaller "$INSTDIR\Uninstall Myoffice.exe"

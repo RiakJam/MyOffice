@@ -11,6 +11,10 @@ npm run desktop
 
 The Vite server started by `npm run desktop` is only for local development. Electron Builder has targets configured for Linux AppImage, Windows NSIS, and macOS DMG; build each installer on its target operating system.
 
+## Windows installer
+
+On Linux, run `npm run build:windows:installer` to create `dist/Myoffice-Setup-Windows-x64.exe`. The command requires NSIS (`sudo apt install nsis`) or the NSIS binary already downloaded by Electron Builder. On Windows, the installer opens directly to a horizontal installation progress bar; file extraction and shortcut creation run behind that screen. It then offers to launch Myoffice.
+
 ## Install on Kali Linux from GitHub
 
 The repository must contain the full project source before these commands will work. On Kali Linux:

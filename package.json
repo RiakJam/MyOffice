@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "desktop": "concurrently \"npm:dev\" \"wait-on http://localhost:5173 && node electron/launch.cjs --myoffice-dev\"",
     "build:desktop": "npm run build && electron-builder",
+    "build:windows:installer": "bash packaging/build-windows-installer.sh",
     "android:sync": "npm run build && cap sync android",
     "android:open": "npm run android:sync && cap open android",
     "android:run": "npm run android:sync && cap run android"
