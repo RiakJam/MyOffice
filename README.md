@@ -2,6 +2,8 @@
 
 Myoffice is a desktop and Android office app built with TypeScript, React, Tiptap, Electron, and Capacitor. The web build is an internal asset used by both application shells; it is not distributed as a standalone web version.
 
+The packaged apps keep their editor code, PDF viewer, PDF font data, and interface fonts locally so document work does not require an internet connection. The start screen loads first; each editor and the XLSX/PDF libraries load when needed.
+
 ## Run
 
 ```bash
@@ -55,8 +57,8 @@ On this Linux desktop, double-click `Myoffice.desktop` on the Desktop to run the
 - Tables, images from files, links, symbols, dates, page breaks, headers, footers, captions, and page numbers.
 - A4, Letter, and Legal sizes; portrait/landscape; margins; a page color palette and custom color picker; page borders; and text or picture watermarks. Watermarks appear in printed pages, PDFs, and DOCX exports. The Design tab's Text highlight section colors selected text.
 - Multiple open document tabs. New opens a blank document while preserving the current document; switching tabs and reloading restores both.
-- Basic find and local autosave. Open DOCX, HTML, TXT, and legacy `.myoffice` files. Save As and Export DOCX create real Microsoft Word files; PDF, HTML, TXT, and optional `.myoffice` backup exports remain available on desktop and Android.
-- Word-style shortcuts include Ctrl/Cmd+S (save), Shift+Ctrl/Cmd+S or F12 (Save As), Ctrl/Cmd+N (new document), O (open), P (print), F (find), H (replace), K (link), Enter (page break), W (close tab), E/L/R/J (alignment), Shift+L (bullets), Shift+N (normal paragraph), Ctrl+Alt+1/2/3 (headings), and font size keys. The editor also supports bold, italic, underline, and undo/redo shortcuts.
+- Basic find and local autosave. Open DOCX, HTML, TXT, and legacy `.myoffice` files. Save writes DOCX; Export PDF creates a PDF. PDFs open in a read-only preview in all three workspaces.
+- Word-style shortcuts include Ctrl/Cmd+S, Shift+Ctrl/Cmd+S, and F12 (save DOCX), Ctrl/Cmd+N (new document), O (open), P (print), F (find), H (replace), K (link), Enter (page break), W (close tab), E/L/R/J (alignment), Shift+L (bullets), Shift+N (normal paragraph), Ctrl+Alt+1/2/3 (headings), and font size keys. The editor also supports bold, italic, underline, and undo/redo shortcuts.
 
 ## Keyboard shortcuts
 
@@ -68,7 +70,7 @@ Shortcuts act on the current workspace and selection. Text fields keep their nor
 
 ## Current limits
 
-This is not Microsoft Word feature parity. DOCX conversion supports common text formatting, headings, tables, images, page layout, headers, footers, and page numbers; complex Word features can change on import or export. Custom per-page Roman numeral ranges are not yet preserved in DOCX. XLSX is the separate Excel workbook format and is not produced by this Word editor. Drafts stored only in application storage can be lost if that storage is cleared; use Save As DOCX for important drafts. Direct PDF export currently rasterizes the document, so text in that PDF is not selectable.
+This is not Microsoft Word feature parity. DOCX conversion supports common text formatting, headings, tables, images, page layout, headers, footers, and page numbers; complex Word features can change on import or export. Custom per-page Roman numeral ranges are not yet preserved in DOCX. Word saves DOCX, Spreadsheet saves XLSX, and Presentation saves PPTX. Myoffice PPTX files can be reopened with their full editing state; external PPTX import is not yet supported. PDFs open for viewing, not editing. Drafts stored only in application storage can be lost if that storage is cleared; use Save for important drafts. Direct PDF export rasterizes Word and Presentation pages, so text in those PDFs is not selectable.
 
 DOCX export uses `docx` (MIT); DOCX import uses Mammoth (BSD-2-Clause), DOMPurify (Apache-2.0 option), and JSZip (MIT option).
 
@@ -76,3 +78,4 @@ DOCX export uses `docx` (MIT); DOCX import uses Mammoth (BSD-2-Clause), DOMPurif
 
 The `progress/` folder contains screenshots from the first and expanded Word milestones. The latest reference-style screenshots start at `11-reference-style-home.png`; `13-file-menu.png` shows the updated File menu. `16-new-document-tab.png` and `17-page-two-flow.png` show document tabs and content flowing to a second sheet.
 # MyOffice
+# Content-Studio
